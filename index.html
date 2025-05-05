@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrindSEO | Unleash Your Digital Edge</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <!-- GSAP for advanced animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init();
+            gsap.registerPlugin(ScrollTrigger);
+        });
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            font-size: clamp(14px, 1vw, 16px);
+            background: #f9fafb;
+            overflow-x: hidden;
+            color: #1A202C;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+            min-height: 100vh;
+            position: relative;
+            z-index: 0;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: #1A202C;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #2D3748 0%, #D69E2E 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: radial-gradient(circle at center, rgba(45, 55, 72, 0.15), rgba(214, 158, 46, 0.05));
+            overflow: hidden;
+            z-index: 1;
+            background: transparent;
+        }
+        
+        .hero-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .custom-shadow {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(12px);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        
+        .nav-hidden {
+            transform: translateY(-100%);
+        }
+        
+        .service-card {
+            position: relative;
+            perspective: 1000px;
+            height: 300px;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            background: white;
+            z-index: 2;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        .service-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .service-card-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+        }
+        
+        .service-card:hover .service-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .service-front, .service-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+        }
+        
+        .service-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #2D3748, #D69E2E);
+            color: white;
+        }
+        
+        .floating-text {
+            animation: floatText 6s ease-in-out infinite;
+        }
+        
+        @keyframes floatText {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .faq-item {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        .faq-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+        }
+        
+        .ripple-button {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ripple-button::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            top: 50%;
+            left: 50%;
+            margin: -50px 0 0 -50px;
+        }
+        
+        @keyframes ripple {
+            to { transform: scale(2); opacity: 0; }
+        }
+        
+        .scroll-reveal {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+        }
+        
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #2D3748, #D69E2E);
+            opacity: 0.08;
+            animation: subtle-move 20s infinite alternate;
+            z-index: 0;
+        }
+        
+        @keyframes subtle-move {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #D69E2E;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #D69E2E;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .service-card {
+                height: 250px;
+            }
+            .hero-section {
+                min-height: 80vh;
+            }
+            .text-5xl {
+                font-size: 2.5rem;
+            }
+            .text-7xl {
+                font-size: 3.5rem;
+            }
+        }
+
+        img[src^="/api/placeholder"] {
+            min-height: 100px;
+            background: #f0f0f0;
+            display: block;
+        }
+
+        section {
+            position: relative;
+            z-index: 1;
+            background: white;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenuButton.setAttribute('aria-expanded', !mobileMenu.classList.contains('hidden'));
+            });
+
+            // Enhanced Particle Canvas (Star-like animation from second file)
+            const canvas = document.getElementById('heroCanvas');
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                const ctx = canvas.getContext('2d');
+                if (!ctx) {
+                    canvas.style.display = 'none';
+                } else {
+                    let particles = [];
+                    
+                    class Particle {
+                        constructor() {
+                            this.x = Math.random() * canvas.width;
+                            this.y = Math.random() * canvas.height;
+                            this.size = Math.random() * 2.5 + 1;
+                            this.speedX = Math.random() * 0.3 - 0.15;
+                            this.speedY = Math.random() * 0.3 - 0.15;
+                            this.color = `hsl(${Math.random() * 60 + 30}, 60%, 60%)`;
+                            this.life = 1;
+                        }
+                        update() {
+                            this.x += this.speedX;
+                            this.y += this.speedY;
+                            this.life -= 0.005;
+                            if (this.life < 0) this.life = 0;
+                        }
+                        draw() {
+                            ctx.globalAlpha = this.life;
+                            ctx.fillStyle = this.color;
+                            ctx.beginPath();
+                            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    }
+                    
+                    function animateParticles() {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        for (let i = 0; i < particles.length; i++) {
+                            particles[i].update();
+                            particles[i].draw();
+                            if (particles[i].life <= 0) {
+                                particles.splice(i, 1);
+                                i--;
+                            }
+                        }
+                        requestAnimationFrame(animateParticles);
+                    }
+                    
+                    setInterval(() => {
+                        if (particles.length < 100) particles.push(new Particle());
+                    }, 50);
+                    animateParticles();
+                }
+            }
+
+            // Scroll-triggered Navigation
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.scrollY;
+                const nav = document.getElementById('navbar');
+                if (currentScroll > lastScroll && currentScroll > 100) {
+                    nav.classList.add('nav-hidden');
+                } else {
+                    nav.classList.remove('nav-hidden');
+                }
+                lastScroll = currentScroll;
+            });
+
+            // GSAP Scroll Animations
+            gsap.utils.toArray('.scroll-reveal').forEach(el => {
+                gsap.from(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 85%',
+                    },
+                    opacity: 0,
+                    y: 40,
+                    duration: 1.2,
+                    ease: 'power3.out'
+                });
+            });
+
+            // FAQ Accordion
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                });
+            });
+
+            // Typewriter Effect
+            const heroText = document.getElementById('hero-title');
+            const text = heroText.textContent;
+            heroText.textContent = '';
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    heroText.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 80);
+                }
+            }
+            type();
+
+            // Force visibility after load
+            setTimeout(() => {
+                document.body.style.visibility = 'visible';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</head>
+<body class="overflow-x-hidden" style="visibility: visible; opacity: 1;">
+    <!-- Navbar -->
+    <nav id="navbar" class="sticky-nav py-4">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="flex justify-between items-center">
+                <a href="#" class="flex items-center">
+                    <span class="font-bold text-2xl gradient-text">Grind<span class="text-gray-900">SEO</span></span>
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#services" class="nav-link text-gray-700 transition">Services</a>
+                    <a href="#about" class="nav-link text-gray-700 transition">About</a>
+                    <a href="#faq" class="nav-link text-gray-700 transition">FAQ</a>
+                    <a href="#contact" class="ripple-button bg-gradient-to-r from-[#2D3748] to-[#D69E2E] text-white py-2 px-6 rounded-full hover:shadow-xl">Get Started</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
+                <a href="#services" class="block text-gray-700 hover:gradient-text">Services</a>
+                <a href="#about" class="block text-gray-700 hover:gradient-text">About</a>
+                <a href="#faq" class="block text-gray-700 hover:gradient-text">FAQ</a>
+                <a href="#contact" class="block ripple-button bg-gradient-to-r from-[#2D3748] to-[#D69E2E] text-white py-2 px-6 rounded-full">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-background"></div>
+        <canvas id="heroCanvas" class="hero-canvas"></canvas>
+        <div class="container mx-auto px-4 md:px-6 relative z-10 py-12">
+            <div class="text-center md:text-left md:flex items-center">
+                <div class="md:w-2/3">
+                    <h1 id="hero-title" class="text-5xl md:text-7xl font-bold mb-6 floating-text">
+                        <span class="gradient-text">Unleash</span> Your Digital Edge
+                    </h1>
+                    <p class="text-xl text-gray-700 mb-8 max-w-2xl mx-auto md:mx-0">
+                        Skyrocket your rankings with bold, bespoke SEO strategies that captivate and convert.
+                    </p>
+                    <a href="#contact" class="ripple-button bg-gradient-to-r from-[#2D3748] to-[#D69E2E] text-white py-3 px-8 rounded-full text-lg font-medium hover:shadow-2xl">Start Now</a>
+                </div>
+                <div class="md:w-1/3 hidden md:block">
+                    <img src="./nisonco-pr-and-seo-yIRdUr6hIvQ-unsplash.jpg" alt="SEO Visual" class="rounded-full floating-text shadow-2xl" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20">
+        <div class="container mx-auto px-4 md:px-6">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 scroll-reveal">
+                Our <span class="gradient-text">Game-Changing</span> Services
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="service-card scroll-reveal">
+                    <div class="service-card-inner">
+                        <div class="service-front">
+                            <i class="fas fa-chart-line text-[#2D3748] text-4xl mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Technical SEO</h3>
+                            <p class="text-gray-600">Uncover hidden potential with deep audits.</p>
+                        </div>
+                        <div class="service-back">
+                            <p class="text-center">text</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card scroll-reveal" data-aos-delay="100">
+                    <div class="service-card-inner">
+                        <div class="service-front">
+                            <i class="fas fa-pen-fancy text-[#D69E2E] text-4xl mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Content Magic</h3>
+                            <p class="text-gray-600">Craft stories that rank and resonate.</p>
+                        </div>
+                        <div class="service-back">
+                            <p class="text-center">text</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card scroll-reveal" data-aos-delay="200">
+                    <div class="service-card-inner">
+                        <div class="service-front">
+                            <i class="fas fa-globe text-[#2D3748] text-4xl mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Link Mastery</h3>
+                            <p class="text-gray-600">Forge connections that elevate authority.</p>
+                        </div>
+                        <div class="service-back">
+                            <p class="text-center">text</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-gradient-to-b from-white to-[#A0AEC0]">
+        <div class="container mx-auto px-4 md:px-6">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 scroll-reveal">
+                Got <span class="gradient-text">Questions?</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div class="faq-item scroll-reveal">
+                    <h3 class="text-xl font-bold mb-2">When will I see results?</h3>
+                    <div class="faq-answer">
+                        <p class="text-gray-600">Expect a lift-off in 6-12 months with our sustainable approach.</p>
+                    </div>
+                </div>
+                <div class="faq-item scroll-reveal" data-aos-delay="100">
+                    <h3 class="text-xl font-bold mb-2">Can you guarantee #1?</h3>
+                    <div class="faq-answer">
+                        <p class="text-gray-600">No promises, but we’ll push your visibility to the stratosphere.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93ae99c81850bcdd',t:'MTc0NjQzMDk0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
