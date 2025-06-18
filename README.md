@@ -25,6 +25,8 @@ It was **rebuilt from scratch by me** to improve UI/UX, practice clean frontend 
 - **Bootstrap** 
 ---
 
+# Github Pages [Link](https://kartikpbatman.github.io/seowebsite)
+
 To view locally on your browser:
 
 ```bash
